@@ -1,0 +1,3 @@
+C:/Users/ja/Desktop/studia/sdizo/pwr_projekt_sdizo_2/projekt/cmake-build-debug/CMakeFiles/projekt.dir
+C:/Users/ja/Desktop/studia/sdizo/pwr_projekt_sdizo_2/projekt/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/ja/Desktop/studia/sdizo/pwr_projekt_sdizo_2/projekt/cmake-build-debug/CMakeFiles/rebuild_cache.dir
