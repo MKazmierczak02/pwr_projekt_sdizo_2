@@ -20,9 +20,18 @@ public:
         int choice;
 
         int value;
+        bool directed;
         cout << endl << "Podaj ilosc wierzcholkow" <<endl;
         cin >> value;
-        auto graph = GraphMatrix(value);
+        cout << endl << "Czy graf ma byc skierowany? Y/N" <<endl;
+        char x;
+        cin >> x;
+        if (x=='Y' || x=='y'){
+            directed = true;
+        } else {
+            directed = false;
+        }
+        auto graph = GraphMatrix(value, directed);
 
         while(app){
             printMenu();
@@ -30,7 +39,7 @@ public:
             switch (choice) {
                 case 1: {
                     cout << "Macierz grafu: " << endl;
-                    graph.displayMatrix();
+                    graph.print_graph();
                     cout << endl;
                     break;
                 }
@@ -43,7 +52,7 @@ public:
                     cin >> w2;
                     cout << "Podaj wage krawdzi: " << endl;
                     cin >> weight;
-                    graph.addEdge(w1, w2, weight);
+                    graph.add_edge(w1, w2, weight);
                     break;
                 }
                 case 3: {
@@ -54,7 +63,7 @@ public:
                     break;
                 }
                 case 4: {
-                    graph.removeGraph();
+                    graph.~GraphMatrix();
                     cout << "Graf usuniety " << endl;
                 }
                 case 0: {
