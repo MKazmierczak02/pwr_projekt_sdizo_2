@@ -4,14 +4,15 @@ using namespace std;
 
 
 class GraphListHandler {
-
 public:
     static void printMenu(){
-        cout <<endl<<"Graf listy"<<endl;
+        cout <<endl<<"Graf macierzy"<<endl;
         cout << "1. Wyswietl Graf" << endl;
         cout << "2. Dodaj krawedz" << endl;
         cout << "3. Wczytaj graf z pliku" << endl;
         cout << "4. Usun graf" << endl;
+        cout << "5. Wyznacz MST (Kruskala)" <<endl;
+        cout << "6. Wyznacz MST (Prima)" <<endl;
         cout << "0. Wyjdz" << endl;
     }
 
@@ -20,17 +21,26 @@ public:
         int choice;
 
         int value;
+        bool directed;
         cout << endl << "Podaj ilosc wierzcholkow" <<endl;
         cin >> value;
-        auto graph = GraphList(value);
+        cout << endl << "Czy graf ma byc skierowany? Y/N" <<endl;
+        char x;
+        cin >> x;
+        if (x=='Y' || x=='y'){
+            directed = true;
+        } else {
+            directed = false;
+        }
+        auto graph = GraphList(value, directed);
 
         while(app){
             printMenu();
             cin >> choice;
             switch (choice) {
                 case 1: {
-                    cout << "Lista grafu: " << endl;
-                    graph.displayList();
+                    cout << "Macierz grafu: " << endl;
+                    graph.print_graph();
                     cout << endl;
                     break;
                 }
@@ -50,13 +60,27 @@ public:
                     string file;
                     cout << endl << "Podaj sciezke do pliku" <<endl;
                     cin >> file;
-//                    graph.loadFromFile(file);
+                    graph = GraphList::graphListloadFromFile(file);
                     break;
                 }
                 case 4: {
-                    graph.removeGraph();
-                    cout << "Graf usuniety " << endl;
+//                    graph.~GraphList();
+//                    cout << "Graf usuniety " << endl;
+//                    break;
                 }
+                case 5: {
+                    GraphList mst = graph.getMinimumSpanningTree();
+                    cout<< endl;
+                    mst.print_graph();
+                    break;
+                }
+                case 6: {
+//                    GraphList mst = graph.getMinimumSpanningTree();
+//                    cout<< endl;
+//                    mst.print_graph();
+                    break;
+                }
+
                 case 0: {
                     app = false;
                     break;
@@ -69,6 +93,5 @@ public:
         }
 
     }
-
 
 };

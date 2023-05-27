@@ -12,6 +12,8 @@ public:
         cout << "2. Dodaj krawedz" << endl;
         cout << "3. Wczytaj graf z pliku" << endl;
         cout << "4. Usun graf" << endl;
+        cout << "5. Wyznacz MST (Kruskala)" <<endl;
+        cout << "6. Wyznacz MST (Prima)" <<endl;
         cout << "0. Wyjdz" << endl;
     }
 
@@ -39,7 +41,7 @@ public:
             switch (choice) {
                 case 1: {
                     cout << "Macierz grafu: " << endl;
-                    graph.print_graph();
+                    graph.displayMatrix();
                     cout << endl;
                     break;
                 }
@@ -52,20 +54,33 @@ public:
                     cin >> w2;
                     cout << "Podaj wage krawdzi: " << endl;
                     cin >> weight;
-                    graph.add_edge(w1, w2, weight);
+                    graph.addEdge(w1, w2, weight);
                     break;
                 }
                 case 3: {
                     string file;
                     cout << endl << "Podaj sciezke do pliku" <<endl;
                     cin >> file;
-//                    graph.loadFromFile(file);
+                    graph = GraphMatrix::graphMatrixloadFromFile(file);
                     break;
                 }
                 case 4: {
                     graph.~GraphMatrix();
                     cout << "Graf usuniety " << endl;
                 }
+                case 5: {
+                    GraphMatrix mst = graph.minimumSpanningTreeKruskal(graph);
+                    cout<< endl;
+                    mst.displayMatrix();
+                    break;
+                }
+                case 6: {
+                    GraphMatrix mst = graph.minimumSpanningTreePrim(graph);
+                    cout<< endl;
+                    mst.displayMatrix();
+                    break;
+                }
+
                 case 0: {
                     app = false;
                     break;
