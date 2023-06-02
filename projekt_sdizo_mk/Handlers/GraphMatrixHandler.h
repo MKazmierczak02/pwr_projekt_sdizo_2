@@ -69,13 +69,13 @@ public:
                     cout << "Graf usuniety " << endl;
                 }
                 case 5: {
-                    GraphMatrix mst = graph.minimumSpanningTreeKruskal(graph);
+                    GraphMatrix mst = graph.getMinimumSpanningTreeKruskal();
                     cout<< endl;
                     mst.displayMatrix();
                     break;
                 }
                 case 6: {
-                    GraphMatrix mst = graph.minimumSpanningTreePrim(graph);
+                    GraphMatrix mst = graph.getMinimumSpanningTreePrim();
                     cout<< endl;
                     mst.displayMatrix();
                     break;

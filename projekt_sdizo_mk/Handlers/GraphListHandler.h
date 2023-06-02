@@ -40,7 +40,7 @@ public:
             switch (choice) {
                 case 1: {
                     cout << "Macierz grafu: " << endl;
-                    graph.print_graph();
+                    graph.displayList();
                     cout << endl;
                     break;
                 }
@@ -64,20 +64,20 @@ public:
                     break;
                 }
                 case 4: {
-//                    graph.~GraphList();
-//                    cout << "Graf usuniety " << endl;
-//                    break;
+                    graph.~GraphList();
+                    cout << "Graf usuniety " << endl;
+                    break;
                 }
                 case 5: {
-                    GraphList mst = graph.getMinimumSpanningTree();
+                    GraphList mst = graph.getMinimumSpanningTreeKruskal();
                     cout<< endl;
-                    mst.print_graph();
+                    mst.displayList();
                     break;
                 }
                 case 6: {
-//                    GraphList mst = graph.getMinimumSpanningTree();
-//                    cout<< endl;
-//                    mst.print_graph();
+                    GraphList mst = graph.getMinimumSpanningTreePrim();
+                    cout<< endl;
+                    mst.displayList();
                     break;
                 }
 

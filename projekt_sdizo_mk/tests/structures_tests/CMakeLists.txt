@@ -7,5 +7,5 @@ target_link_libraries(runStructuresTests gtest gtest_main)
 
 add_subdirectory(testfiles)
 
-file(COPY testfiles/tab1.txt
+file(COPY testfiles/graf.txt
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
