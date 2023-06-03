@@ -4,15 +4,21 @@
 
 using namespace std;
 
-TEST(GraphMatrix, GraphMatrix__Test)
+//TEST(GraphMatrix, GraphMatrix_MST_Test)
+//{
+//    auto graph = GraphMatrix::graphMatrixloadFromFile("./graf.txt");
+//    graph.displayMatrix();
+//    graph.getMinimumSpanningTreeKruskal();
+//    cout << "\n\n";
+//    graph.getMinimumSpanningTreePrim();
+//    cout << "\n\n";
+//    EXPECT_EQ(0, 0);
+//}
+
+TEST(GraphMatrix, GraphMatrix_ND_Test)
 {
-    auto graph = GraphMatrix::graphMatrixloadFromFile("./graf2.txt");
-    graph.displayMatrix();
-    auto mst = graph.getMinimumSpanningTreeKruskal();
+    auto graph = GraphMatrix::graphMatrixloadFromFile("./graf3.txt");
     cout << "\n\n";
-//    mst.displayMatrix();
-    auto mst2 = graph.getMinimumSpanningTreePrim();
-    cout << "\n\n";
-//    mst2.displayMatrix();
+    graph.shortestPathDijkstra();
     EXPECT_EQ(0, 0);
 }

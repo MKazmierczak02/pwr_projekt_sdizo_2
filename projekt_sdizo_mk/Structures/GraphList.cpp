@@ -22,6 +22,7 @@ struct ListEl {
 
 class GraphList {
 private:
+    const int INF = numeric_limits<int>::max();
     int num_vertices, vf, vl;
     ListEl** adj_list;
 
@@ -81,11 +82,7 @@ public:
         return group[vertex];
     }
 
-    int getWeight(int u, int v) {
-        return adj_list[u][v].weight;
-    }
-
-    GraphList getMinimumSpanningTreeKruskal() {
+    void getMinimumSpanningTreeKruskal() {
         // Nowy graf dla MST
         GraphList mst(num_vertices, 0, 0);
 
@@ -125,25 +122,23 @@ public:
 
             // Jeśli dodanie krawędzi nie tworzy cyklu, dodaj ją do MST
             if (group_u != group_v) {
-                mst.addEdge(u, v, edge.weight, false);
+                cout << "(" <<v <<","<<u<<")  "<<edge.weight<<endl;
                 sum += edge.weight;
                 // Połącz zbiory wierzchołków źródłowego i docelowego
                 group[group_u] = group_v;
             }
         }
-        cout<<"Suma krawedzi w mst: "<<sum << endl;
-        mst.displayList();
-        return mst;
+        cout<<"MST = "<<sum << endl;
     }
 
-    GraphList getMinimumSpanningTreePrim() {
+    void getMinimumSpanningTreePrim() {
         // Nowy graf dla MST
         GraphList mst(num_vertices, 0, 0);
 
         // Wierzcholek od ktorego zaczynamy
         int startVertex = 0;
 
-        vector<int> key(num_vertices, INT_MAX); // Tablica kluczy (wagi)
+        vector<int> key(num_vertices, INF); // Tablica kluczy (wagi)
         vector<int> group(num_vertices, -1); // Tablica grup w MST
         vector<bool> inMST(num_vertices, false); // Tablica oznaczająca, czy wierzchołek należy już do MST
 
@@ -179,15 +174,80 @@ public:
         // Dodawanie krawędzi do MST w oparciu o tablicę grup
         for (int v = 0; v < num_vertices; ++v) {
             if (group[v] != -1) {
-                mst.addEdge(v, group[v], key[v], false);
+                cout << "(" <<v <<","<<group[v]<<")  "<<key[v]<<endl;
                 sum += key[v];
             }
         }
-        cout<<"Suma krawedzi w mst: "<<sum << endl;
-        mst.displayList();
-        return mst;
+        cout<<"MST = "<<sum << endl;
     }
 
+    void shortestPathDijkstra() {
+        vector<int> distance(num_vertices, INF);
+        vector<int> parent(num_vertices, -1);
+        vector<bool> visited(num_vertices, false);
+
+        int startVertex = this->vf;
+        // Odległość od wierzchołka początkowego do samego siebie wynosi 0
+        distance[startVertex] = 0;
+
+        for (int i = 0; i < num_vertices; i++) {
+            int minDistance = INF;
+            int minVertex = -1;
+
+            // Znalezienie wierzchołka o najmniejszej odległości
+            for (int v = 0; v < num_vertices; v++) {
+                if (!visited[v] && distance[v] < minDistance) {
+                    minDistance = distance[v];
+                    minVertex = v;
+                }
+            }
+
+            // Jeśli nie znaleziono żadnego wierzchołka, przerywamy
+            if (minVertex == -1) {
+                break;
+            }
+
+            visited[minVertex] = true;
+
+            // Aktualizacja odległości do sąsiadujących wierzchołków
+            ListEl* current = adj_list[minVertex];
+            while (current != nullptr) {
+                int v = current->v;
+                int weight = current->weight;
+                if (weight != INF && distance[minVertex] + weight < distance[v]) {
+                    distance[v] = distance[minVertex] + weight;
+                    parent[v] = minVertex;
+                }
+
+                current = current->next;
+            }
+        }
+
+        cout << "Start = " << startVertex<< endl;
+        cout << "End  Dist Path"<< endl;
+
+        // Wyświetlenie długości drogi i sekwencji wierzchołków dla każdego wierzchołka
+        for (int v = 0; v < num_vertices; ++v) {
+            if (v != startVertex) {
+                cout << v << "  |  ";
+                cout << distance[v] << "  |  ";
+
+                vector<int> path;
+                int currentVertex = v;
+                while (currentVertex != -1) {
+                    path.push_back(currentVertex);
+                    currentVertex = parent[currentVertex];
+                }
+
+                for (int i = path.size() - 1; i >= 0; --i) {
+                    cout << path[i];
+                    if (i != 0)
+                        cout << " ";
+                }
+                cout << endl;
+            }
+        }
+    }
 
     static GraphList  graphListloadFromFile(const string& fileName) {
         fstream file(fileName);
@@ -204,7 +264,6 @@ public:
             if (vf == 0 && vl == 0){
                 directed = false;
             }
-            cout << directed;
             GraphList graph = GraphList(vertices, vf, vl);
             if(file.fail())
                 cout << "File error - READ SIZE" << endl;

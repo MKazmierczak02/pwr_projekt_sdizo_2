@@ -17,12 +17,12 @@ public:
         return e1.weight < e2.weight;
     }
 };
-const int INF = numeric_limits<int>::max(); // Wartość reprezentująca brak krawędzi
 
 
 class GraphMatrix {
 
 private:
+    const int INF = numeric_limits<int>::max(); // Wartość reprezentująca brak krawędzi
     int  num_vertices;
     int **adjacencyMatrix;
     int vf, vl;
@@ -99,10 +99,7 @@ public:
         return group[v];
     }
 
-    GraphMatrix getMinimumSpanningTreeKruskal() {
-        // Nowy graf dla MST
-        GraphMatrix mst(num_vertices, 0, 0);
-
+    void getMinimumSpanningTreeKruskal() {
         // Wektor wszystkich krawędzi w grafie
         vector<Edge> edges;
 
@@ -139,19 +136,15 @@ public:
             int group_v = findSet(group, v);
 
             if (group_u != group_v) {
-                mst.addEdge(u, v, edge.weight, false);
+                cout << "(" <<v <<","<<u<<")  "<<edge.weight<<endl;
                 sum += edge.weight;
                 group[group_u] = group_v;
             }
         }
-        cout<<"Suma krawedzi w mst: "<<sum << endl;
-        mst.displayMatrix();
-        return mst;
+        cout<<"MST = "<<sum << endl;
     }
 
-    GraphMatrix getMinimumSpanningTreePrim() {
-        // Nowy graf dla MST
-        GraphMatrix mst(num_vertices, 0, 0);
+    void getMinimumSpanningTreePrim() {
 
         // Wierzcholek od ktorego zaczynamy
         int startVertex = 0;
@@ -188,13 +181,73 @@ public:
         // Dodawanie krawędzi do MST w oparciu o tablicę grup
         for (int v = 0; v < num_vertices; ++v) {
             if (group[v] != -1) {
-                mst.addEdge(v, group[v], key[v], false);
+                cout << "(" <<v <<","<<group[v]<<")  "<<key[v]<<endl;
                 sum += key[v];
             }
         }
-        cout<<"Suma krawedzi w mst: "<<sum << endl;
-        mst.displayMatrix();
-        return mst;
+        cout<<"MST = "<<sum << endl;
+    }
+
+    void shortestPathDijkstra() {
+        vector<int> distance(num_vertices, INF);  // Tablica odległości
+        vector<int> parent(num_vertices, -1);     // Tablica rodziców w najkrótszej ścieżce
+        vector<bool> visited(num_vertices, false); // Tablica odwiedzonych wierzchołków
+
+        int startVertex = this-> vf;
+        // Odległość od wierzchołka początkowego do samego siebie wynosi 0
+        distance[startVertex] = 0;
+
+        for (int i = 0; i < num_vertices - 1; i++) {
+            int minDistance = INF;
+            int minVertex = -1;
+
+            // Znalezienie wierzchołka o najmniejszej odległości
+            for (int v = 0; v < num_vertices; ++v) {
+                if (!visited[v] && distance[v] < minDistance) {
+                    minDistance = distance[v];
+                    minVertex = v;
+                }
+            }
+            // Jeśli nie znaleziono żadnego wierzchołka, przerywamy
+            if (minVertex == -1)
+                break;
+
+            visited[minVertex] = true;
+
+            // Aktualizacja odległości do sąsiadujących wierzchołków
+            for (int v = 0; v < num_vertices; ++v) {
+                int weight = this->getWeight(minVertex, v);
+                if (weight != INF && distance[minVertex] + weight < distance[v]) {
+                    distance[v] = distance[minVertex] + weight;
+                    parent[v] = minVertex;
+                }
+            }
+        }
+
+        cout << "Start = " << startVertex<< endl;
+        cout << "End  Dist Path"<< endl;
+
+        // Wyświetlenie długości drogi i sekwencji wierzchołków dla każdego wierzchołka
+        for (int v = 0; v < num_vertices; ++v) {
+            if (v != startVertex) {
+                cout << v << "  |  ";
+                cout << distance[v] << "  |  ";
+
+                vector<int> path;
+                int currentVertex = v;
+                while (currentVertex != -1) {
+                    path.push_back(currentVertex);
+                    currentVertex = parent[currentVertex];
+                }
+
+                for (int i = path.size() - 1; i >= 0; --i) {
+                    cout << path[i];
+                    if (i != 0)
+                        cout << " ";
+                }
+                cout << endl;
+            }
+        }
     }
 
     static GraphMatrix graphMatrixloadFromFile(const string& fileName) {
@@ -237,4 +290,6 @@ public:
             return graph;
         }
     }
+
+
 };

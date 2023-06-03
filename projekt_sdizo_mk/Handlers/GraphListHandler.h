@@ -69,15 +69,13 @@ public:
                     break;
                 }
                 case 5: {
-                    GraphList mst = graph.getMinimumSpanningTreeKruskal();
+                    graph.getMinimumSpanningTreeKruskal();
                     cout<< endl;
-//                    mst.displayList();
                     break;
                 }
                 case 6: {
-                    GraphList mst = graph.getMinimumSpanningTreePrim();
+                    graph.getMinimumSpanningTreePrim();
                     cout<< endl;
-//                    mst.displayList();
                     break;
                 }
 
