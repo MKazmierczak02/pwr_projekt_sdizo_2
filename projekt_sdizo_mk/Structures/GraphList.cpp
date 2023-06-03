@@ -22,7 +22,7 @@ struct ListEl {
 
 class GraphList {
 private:
-    const int INF = numeric_limits<int>::max();
+    int INF = numeric_limits<int>::max();
     int num_vertices, vf, vl;
     ListEl** adj_list;
 
@@ -182,9 +182,9 @@ public:
     }
 
     void shortestPathDijkstra() {
-        vector<int> distance(num_vertices, INF);
-        vector<int> parent(num_vertices, -1);
-        vector<bool> visited(num_vertices, false);
+        vector<int> distance(num_vertices, INF);    // Tablica odległości
+        vector<int> parent(num_vertices, -1);   // Tablica poprzednikow w najkrótszej ścieżce
+        vector<bool> visited(num_vertices, false);  // Tablica odwiedzonych wierzchołków
 
         int startVertex = this->vf;
         // Odległość od wierzchołka początkowego do samego siebie wynosi 0

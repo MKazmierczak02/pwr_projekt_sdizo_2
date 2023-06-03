@@ -13,6 +13,8 @@ public:
         cout << "4. Usun graf" << endl;
         cout << "5. Wyznacz MST (Kruskala)" <<endl;
         cout << "6. Wyznacz MST (Prima)" <<endl;
+        cout << "7. Wyznacz Najkrotsze drogi w grafie (Djikstra)" <<endl;
+        cout << "8. Wyznacz MST (Prima)" <<endl;
         cout << "0. Wyjdz" << endl;
     }
 
@@ -20,19 +22,14 @@ public:
         bool app = true;
         int choice;
 
-        int value;
-        bool directed;
+        int value, vf, vl;
         cout << endl << "Podaj ilosc wierzcholkow" <<endl;
         cin >> value;
-        cout << endl << "Czy graf ma byc skierowany? Y/N" <<endl;
-        char x;
-        cin >> x;
-        if (x=='Y' || x=='y'){
-            directed = true;
-        } else {
-            directed = false;
-        }
-        auto graph = GraphList(value, directed);
+        cout << endl << "Podaj wierzcholek poczatkowy" <<endl;
+        cin >> vf;
+        cout << endl << "Podaj wierzcholek koncowy" <<endl;
+        cin >> vl;
+        auto graph = GraphList(value, vf, vl);
 
         while(app){
             printMenu();
@@ -45,6 +42,7 @@ public:
                     break;
                 }
                 case 2: {
+                    bool directed;
                     int w1, w2, weight;
                     cout << "Dodawanie grafu:" <<endl;
                     cout << "Podaj pierwszy wierzcholek: " << endl;
@@ -53,7 +51,15 @@ public:
                     cin >> w2;
                     cout << "Podaj wage krawdzi: " << endl;
                     cin >> weight;
-                    graph.addEdge(w1, w2, weight);
+                    cout << endl << "Czy krawedz ma byc skierowana? Y/N" <<endl;
+                    char x;
+                    cin >> x;
+                    if (x=='Y' || x=='y'){
+                        directed = true;
+                    } else {
+                        directed = false;
+                    }
+                    graph.addEdge(w1, w2, weight, directed);
                     break;
                 }
                 case 3: {
@@ -78,7 +84,11 @@ public:
                     cout<< endl;
                     break;
                 }
-
+                case 7: {
+                    graph.shortestPathDijkstra();
+                    cout<< endl;
+                    break;
+                }
                 case 0: {
                     app = false;
                     break;

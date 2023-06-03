@@ -22,7 +22,7 @@ public:
 class GraphMatrix {
 
 private:
-    const int INF = numeric_limits<int>::max(); // Wartość reprezentująca brak krawędzi
+    int INF = numeric_limits<int>::max(); // Wartość reprezentująca brak krawędzi
     int  num_vertices;
     int **adjacencyMatrix;
     int vf, vl;
@@ -190,7 +190,7 @@ public:
 
     void shortestPathDijkstra() {
         vector<int> distance(num_vertices, INF);  // Tablica odległości
-        vector<int> parent(num_vertices, -1);     // Tablica rodziców w najkrótszej ścieżce
+        vector<int> parent(num_vertices, -1);     // Tablica poprzednikow w najkrótszej ścieżce
         vector<bool> visited(num_vertices, false); // Tablica odwiedzonych wierzchołków
 
         int startVertex = this-> vf;
