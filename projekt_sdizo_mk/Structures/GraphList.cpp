@@ -22,21 +22,21 @@ struct ListEl {
 
 class GraphList {
 private:
-    int num_vertices;
+    int num_vertices, vf, vl;
     ListEl** adj_list;
-    bool directed;
 
 public:
-    GraphList(int num_vertices, bool directed)  {
+    GraphList(int num_vertices, int vf, int vl)  {
         this->num_vertices = num_vertices;
-        this->directed = directed;
+        this->vf = vf;
+        this->vl = vl;
         adj_list = new ListEl*[num_vertices];
         for (int i = 0; i < num_vertices; i++) {
             adj_list[i] = nullptr;
         }
     }
 
-    void addEdge(int u, int v, int weight) {
+    void addEdge(int u, int v, int weight, bool directed) {
         if (u < 0 || u >= num_vertices || v < 0 || v >= num_vertices) {
             cout << "Nieprawidlowy index wierzcholka" << std::endl;
             return;
@@ -72,12 +72,6 @@ public:
         }
     }
 
-//    ~GraphList() {
-////        for (int i = 0; i < num_vertices; i++) {
-////            adj_list[i] = nullptr;
-////        }
-////        delete[] adj_list;
-//    }
 
     int findSet(vector<int>& group, int vertex) {
         // Znajdź grupe wierzchołka (z kompresją ścieżki)
@@ -93,7 +87,7 @@ public:
 
     GraphList getMinimumSpanningTreeKruskal() {
         // Nowy graf dla MST
-        GraphList mst(num_vertices, directed);
+        GraphList mst(num_vertices, 0, 0);
 
         // Wektor wszystkich krawędzi w grafie
         vector<EdgeList> edges;
@@ -119,7 +113,7 @@ public:
         for (int i = 0; i < num_vertices; i++) {
             group[i] = i;
         }
-
+        int sum = 0;
         // Przechodzenie po posortowanych krawędziach i dodawanie ich do MST
         for (auto edge : edges) {
             int u = edge.u;
@@ -131,19 +125,20 @@ public:
 
             // Jeśli dodanie krawędzi nie tworzy cyklu, dodaj ją do MST
             if (group_u != group_v) {
-                mst.addEdge(u, v, edge.weight);
-
+                mst.addEdge(u, v, edge.weight, false);
+                sum += edge.weight;
                 // Połącz zbiory wierzchołków źródłowego i docelowego
                 group[group_u] = group_v;
             }
         }
-
+        cout<<"Suma krawedzi w mst: "<<sum << endl;
+        mst.displayList();
         return mst;
     }
 
     GraphList getMinimumSpanningTreePrim() {
         // Nowy graf dla MST
-        GraphList mst(num_vertices, directed);
+        GraphList mst(num_vertices, 0, 0);
 
         // Wierzcholek od ktorego zaczynamy
         int startVertex = 0;
@@ -180,32 +175,41 @@ public:
                 current = current->next;
             }
         }
-
+        int sum = 0;
         // Dodawanie krawędzi do MST w oparciu o tablicę grup
         for (int v = 0; v < num_vertices; ++v) {
             if (group[v] != -1) {
-                mst.addEdge(v, group[v], key[v]);
+                mst.addEdge(v, group[v], key[v], false);
+                sum += key[v];
             }
         }
+        cout<<"Suma krawedzi w mst: "<<sum << endl;
+        mst.displayList();
         return mst;
     }
 
 
     static GraphList  graphListloadFromFile(const string& fileName) {
         fstream file(fileName);
-        int size, vertices;
-        int u, v, weight;
+        int edges, vertices, u, v, weight, vf, vl;
         if(file.is_open())
             fstream file(fileName);
         if(file.is_open())
         {
-            file >> size;
+            bool directed = true;
             file >> vertices;
-            GraphList graph = GraphList(size, false);
+            file >> edges;
+            file >> vf;
+            file >> vl;
+            if (vf == 0 && vl == 0){
+                directed = false;
+            }
+            cout << directed;
+            GraphList graph = GraphList(vertices, vf, vl);
             if(file.fail())
                 cout << "File error - READ SIZE" << endl;
             else
-                for(int i = 0; i < vertices; i++)
+                for(int i = 0; i < edges; i++)
                 {
                     file >> u;
                     file >> v;
@@ -217,14 +221,14 @@ public:
                         break;
                     }
                     else
-                        graph.addEdge(u, v, weight);
+                        graph.addEdge(u, v, weight, directed);
                 }
             file.close();
             return graph;
         }
         else {
             cout << "File error - OPEN" << endl;
-            return {0, false};
+            return {vertices, 0, 0};
         }
     }
 

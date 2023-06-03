@@ -71,13 +71,13 @@ public:
                 case 5: {
                     GraphMatrix mst = graph.getMinimumSpanningTreeKruskal();
                     cout<< endl;
-                    mst.displayMatrix();
+//                    mst.displayMatrix();
                     break;
                 }
                 case 6: {
                     GraphMatrix mst = graph.getMinimumSpanningTreePrim();
                     cout<< endl;
-                    mst.displayMatrix();
+//                    mst.displayMatrix();
                     break;
                 }
 

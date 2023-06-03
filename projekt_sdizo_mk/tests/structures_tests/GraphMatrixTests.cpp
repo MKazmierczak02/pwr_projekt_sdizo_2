@@ -6,13 +6,13 @@ using namespace std;
 
 TEST(GraphMatrix, GraphMatrix__Test)
 {
-    auto graph = GraphMatrix::graphMatrixloadFromFile("./graf.txt");
+    auto graph = GraphMatrix::graphMatrixloadFromFile("./graf2.txt");
     graph.displayMatrix();
     auto mst = graph.getMinimumSpanningTreeKruskal();
     cout << "\n\n";
-    mst.displayMatrix();
-    auto mst2 = graph.getMinimumSpanningTreeKruskal();
+//    mst.displayMatrix();
+    auto mst2 = graph.getMinimumSpanningTreePrim();
     cout << "\n\n";
-    mst2.displayMatrix();
+//    mst2.displayMatrix();
     EXPECT_EQ(0, 0);
 }

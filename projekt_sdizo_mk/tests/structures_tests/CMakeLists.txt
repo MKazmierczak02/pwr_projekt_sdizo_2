@@ -9,3 +9,5 @@ add_subdirectory(testfiles)
 
 file(COPY testfiles/graf.txt
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY testfiles/graf2.txt
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

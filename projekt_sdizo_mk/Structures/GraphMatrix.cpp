@@ -23,22 +23,21 @@ const int INF = numeric_limits<int>::max(); // Wartość reprezentująca brak kr
 class GraphMatrix {
 
 private:
-    int size;
+    int  num_vertices;
     int **adjacencyMatrix;
-    int num_vertices;
-    bool directed;
-
+    int vf, vl;
 public:
 
     // Konstruktor
-    GraphMatrix(int n, bool directed) : num_vertices(n) {
-        this->size = n;
+    GraphMatrix(int n, int vf, int vl) {
+        this-> num_vertices = n; // ilosc wierzcholkow
+        this->vf = vf; // wierzcholek poczatkowy dla najkrotszej drogi
+        this->vl = vl; // wierzcholek koncowy dla najkrotszej drogi
         fillUpMatrix();
-        this->directed=directed;
     }
 
     // Dodaj krawędź o określonej wadze między wierzchołkami u i v
-    void addEdge(int u, int v, int weight) {
+    void addEdge(int u, int v, int weight, bool directed) {
         if (u>num_vertices || v>=num_vertices || weight < 0){
             cout << "index out of bounds" << endl;
             return;
@@ -54,17 +53,17 @@ public:
     ~GraphMatrix() {
         adjacencyMatrix = nullptr;
         delete adjacencyMatrix;
-        size = 0;
+         num_vertices = 0;
         num_vertices = 0;
     }
 
     void fillUpMatrix(){
-        int** matrix = new int*[size];
-        for (int i = 0; i < size; i++) {
-            matrix[i] = new int[size];
+        int** matrix = new int*[ num_vertices];
+        for (int i = 0; i <  num_vertices; i++) {
+            matrix[i] = new int[ num_vertices];
         }
-        for(int i=0; i<size; i++){
-            for(int j=0; j<size; j++){
+        for(int i=0; i< num_vertices; i++){
+            for(int j=0; j< num_vertices; j++){
                 matrix[i][j]=INF;
             }
         }
@@ -86,17 +85,11 @@ public:
             cout << endl;
         }
     }
-    int getnum_vertices(){
-        return num_vertices;
-    }
 
     int getWeight(int i, int j){
         return adjacencyMatrix[i][j];
     }
 
-    bool isDirected(){
-        return directed;
-    }
 
     int findSet(vector<int>& group, int v) {
         // Znajdowanie korzenia zbioru rozłącznego zawierającego wierzchołek
@@ -106,24 +99,9 @@ public:
         return group[v];
     }
 
-    void unionSets(vector<int>& group, vector<int>& rank, int x, int y) {
-        // Łączenie dwóch zbiorów rozłącznych na podstawie rangi
-        int groupX = findSet(group, x);
-        int groupY = findSet(group, y);
-
-        if (rank[groupX] < rank[groupY]) {
-            group[groupX] = groupY;
-        } else if (rank[groupX] > rank[groupY]) {
-            group[groupY] = groupX;
-        } else {
-            group[groupY] = groupX;
-            rank[groupX]++;
-        }
-    }
-
     GraphMatrix getMinimumSpanningTreeKruskal() {
         // Nowy graf dla MST
-        GraphMatrix mst(num_vertices, this->isDirected());
+        GraphMatrix mst(num_vertices, 0, 0);
 
         // Wektor wszystkich krawędzi w grafie
         vector<Edge> edges;
@@ -150,7 +128,7 @@ public:
         for (int i = 0; i < num_vertices; ++i) {
             group[i] = i;
         }
-
+        int sum = 0;
         // Przechodzenie po posortowanych krawędziach i dodawanie ich do MST
         for (auto edge : edges) {
             int u = edge.u;
@@ -161,17 +139,19 @@ public:
             int group_v = findSet(group, v);
 
             if (group_u != group_v) {
-                mst.addEdge(u, v, edge.weight);
+                mst.addEdge(u, v, edge.weight, false);
+                sum += edge.weight;
                 group[group_u] = group_v;
             }
         }
-
+        cout<<"Suma krawedzi w mst: "<<sum << endl;
+        mst.displayMatrix();
         return mst;
     }
 
     GraphMatrix getMinimumSpanningTreePrim() {
         // Nowy graf dla MST
-        GraphMatrix mst(num_vertices, directed);
+        GraphMatrix mst(num_vertices, 0, 0);
 
         // Wierzcholek od ktorego zaczynamy
         int startVertex = 0;
@@ -204,30 +184,37 @@ public:
                 }
             }
         }
-
+        int sum = 0;
         // Dodawanie krawędzi do MST w oparciu o tablicę grup
         for (int v = 0; v < num_vertices; ++v) {
             if (group[v] != -1) {
-                mst.addEdge(v, group[v], key[v]);
+                mst.addEdge(v, group[v], key[v], false);
+                sum += key[v];
             }
         }
-
+        cout<<"Suma krawedzi w mst: "<<sum << endl;
+        mst.displayMatrix();
         return mst;
     }
 
     static GraphMatrix graphMatrixloadFromFile(const string& fileName) {
         fstream file(fileName);
-        int size, vertices;
-        int u, v, weight;
+        int edges, vertices, u, v, weight, vf, vl;
         if(file.is_open())
         {
-            file >> size;
+            bool directed = true;
             file >> vertices;
-            GraphMatrix graph = GraphMatrix(size, false);
+            file >> edges;
+            file >> vf;
+            file >> vl;
+            if (vf == 0 && vl == 0){
+                directed = false;
+            }
+            GraphMatrix graph = GraphMatrix(vertices, vf, vl);
             if(file.fail())
-                cout << "File error - READ SIZE" << endl;
+                cout << "File error - READ  num_vertices" << endl;
             else
-                for(int i = 0; i < vertices; i++)
+                for(int i = 0; i < edges; i++)
                 {
                     file >> u;
                     file >> v;
@@ -239,14 +226,14 @@ public:
                         break;
                     }
                     else
-                        graph.addEdge(u, v, weight);
+                        graph.addEdge(u, v, weight, directed);
                 }
             file.close();
             return graph;
         }
         else {
             cout << "File error - OPEN" << endl;
-            GraphMatrix graph = GraphMatrix(size, false);
+            GraphMatrix graph = GraphMatrix(vertices, 0, 0);
             return graph;
         }
     }

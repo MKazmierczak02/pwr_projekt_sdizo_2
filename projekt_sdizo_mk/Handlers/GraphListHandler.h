@@ -6,7 +6,7 @@ using namespace std;
 class GraphListHandler {
 public:
     static void printMenu(){
-        cout <<endl<<"Graf macierzy"<<endl;
+        cout <<endl<<"Graf Listy"<<endl;
         cout << "1. Wyswietl Graf" << endl;
         cout << "2. Dodaj krawedz" << endl;
         cout << "3. Wczytaj graf z pliku" << endl;
@@ -71,13 +71,13 @@ public:
                 case 5: {
                     GraphList mst = graph.getMinimumSpanningTreeKruskal();
                     cout<< endl;
-                    mst.displayList();
+//                    mst.displayList();
                     break;
                 }
                 case 6: {
                     GraphList mst = graph.getMinimumSpanningTreePrim();
                     cout<< endl;
-                    mst.displayList();
+//                    mst.displayList();
                     break;
                 }
 
