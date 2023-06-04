@@ -11,6 +11,7 @@ add_executable(projekt_sdizo_2 ${SOURCE_FILES})
 add_subdirectory(Structures)
 add_subdirectory(tests)
 add_subdirectory(Handlers)
+add_subdirectory(TimeTests)
 
 file(COPY graf.txt
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
