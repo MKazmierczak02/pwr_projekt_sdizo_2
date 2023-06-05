@@ -257,15 +257,15 @@ public:
 
         vector<int> distance(num_vertices, INF); // Tablica odległości
         distance[startVertex] = 0;
-        vector<int> parent(num_vertices, -1); // Tablica poprzednikow w najkrótszej ścieżce
+        vector<int> parent(num_vertices, -1); // Tablica poprzedników w najkrótszej ścieżce
 
         // Relaksacja krawędzi |V|
-        for (int i = 0; i < num_vertices ; i++) {
+        for (int i = 0; i < num_vertices - 1; i++) {
+            // Przejście przez wszystkie krawędzie i aktualizacja odległości
             for (int u = 0; u < num_vertices; u++) {
                 for (int v = 0; v < num_vertices; v++) {
-                    int weight = getWeight(u, v);
-                    // Relaksacja krawędzi
-                    if (distance[u] != INF && distance[u] + weight < distance[v]) {
+                    int weight = this->getWeight(u, v);
+                    if (weight != INF && distance[u] != INF && distance[u] + weight < distance[v]) {
                         distance[v] = distance[u] + weight;
                         parent[v] = u;
                     }
@@ -273,15 +273,12 @@ public:
             }
         }
 
-
-        // Sprawdzenie czy występują ujemne cykle
+        // Sprawdzenie ujemnych cykli
         for (int u = 0; u < num_vertices; u++) {
             for (int v = 0; v < num_vertices; v++) {
-                int weight = getWeight(u, v);
-
-                // Sprawdzenie ujemnego cyklu
-                if (distance[u] != INF && distance[u] + weight < distance[v]) {
-                    cout << "Graf zawiera ujemny cykl." << endl;
+                int weight = this->getWeight(u, v);
+                if (weight != INF && distance[u] != INF && distance[u] + weight < distance[v]) {
+                    cout << "Graf zawiera ujemny cykl" << endl;
                     return;
                 }
             }
@@ -293,12 +290,13 @@ public:
 
         for (int v = 0; v < num_vertices; v++) {
             if (v != startVertex) {
+
                 cout << v << "  |  ";
                 if (distance[v] == INF) {
                     cout << "Brak drogi." << endl;
                 } else {
                     cout << distance[v] << "  | ";
-
+                }
                     vector<int> path;
                     int currentVertex = v;
                     while (currentVertex != -1) {
@@ -312,7 +310,6 @@ public:
                             cout << " ";
                     }
                     cout << endl;
-                }
             }
         }
     }
