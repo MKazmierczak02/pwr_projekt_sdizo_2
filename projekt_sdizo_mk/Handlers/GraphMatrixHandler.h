@@ -10,26 +10,20 @@ public:
         cout <<endl<<"Graf macierzy"<<endl;
         cout << "1. Wyswietl Graf" << endl;
         cout << "2. Dodaj krawedz" << endl;
-        cout << "3. Wczytaj graf z pliku" << endl;
-        cout << "4. Usun graf" << endl;
-        cout << "5. Wyznacz MST (Kruskala)" <<endl;
-        cout << "6. Wyznacz MST (Prima)" <<endl;
-        cout << "7. Wyznacz Najkrotsze drogi w grafie (Djikstra)" <<endl;
+        cout << "3. Wyznacz MST (Kruskala)" <<endl;
+        cout << "4. Wyznacz MST (Prima)" <<endl;
+        cout << "5. Wyznacz Najkrotsze drogi w grafie (Djikstra)" <<endl;
+        cout << "6. Wyznacz Najkrotsze drogi w grafie (Bellman-Ford)" <<endl;
         cout << "0. Wyjdz" << endl;
     }
 
     static void handle() {
         bool app = true;
         int choice;
-        int value ,vf, vl;
-        cout << endl << "Podaj ilosc wierzcholkow" <<endl;
-        cin >> value;
-        cout << endl << "Czy graf ma byc skierowany? Y/N" <<endl;
-        cout << endl << "Podaj wierzcholek poczatkowy" <<endl;
-        cin >> vf;
-        cout << endl << "Podaj wierzcholek koncowy" <<endl;
-        cin >> vl;
-        auto graph = GraphMatrix(value, vf, vl);
+        string file;
+        cout << endl << "Podaj sciezke do pliku" <<endl;
+        cin >> file;
+        auto graph = GraphMatrix::graphMatrixloadFromFile(file);
 
         while(app){
             printMenu();
@@ -44,7 +38,7 @@ public:
                 case 2: {
                     int w1, w2, weight;
                     bool directed;
-                    cout << "Dodawanie grafu:" <<endl;
+                    cout << "Dodawanie krawedzi:" <<endl;
                     cout << "Podaj pierwszy wierzcholek: " << endl;
                     cin >> w1;
                     cout << "Podaj drugi wierzcholek: " << endl;
@@ -63,28 +57,22 @@ public:
                     break;
                 }
                 case 3: {
-                    string file;
-                    cout << endl << "Podaj sciezke do pliku" <<endl;
-                    cin >> file;
-                    graph = GraphMatrix::graphMatrixloadFromFile(file);
-                    break;
-                }
-                case 4: {
-                    graph.~GraphMatrix();
-                    cout << "Graf usuniety " << endl;
-                }
-                case 5: {
                     graph.MinimumSpanningTreeKurskal();
                     cout<< endl;
                     break;
                 }
-                case 6: {
+                case 4: {
                     graph.MinimumSpanningTreePrim();
                     cout<< endl;
                     break;
                 }
-                case 7: {
+                case 5: {
                     graph.shortestPathDijkstra();
+                    cout<< endl;
+                    break;
+                }
+                case 6: {
+                    graph.shortestPathBellmanFord();
                     cout<< endl;
                     break;
                 }

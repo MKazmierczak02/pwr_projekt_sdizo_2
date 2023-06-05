@@ -9,12 +9,10 @@ public:
         cout <<endl<<"Graf Listy"<<endl;
         cout << "1. Wyswietl Graf" << endl;
         cout << "2. Dodaj krawedz" << endl;
-        cout << "3. Wczytaj graf z pliku" << endl;
-        cout << "4. Usun graf" << endl;
-        cout << "5. Wyznacz MST (Kruskala)" <<endl;
-        cout << "6. Wyznacz MST (Prima)" <<endl;
-        cout << "7. Wyznacz Najkrotsze drogi w grafie (Djikstra)" <<endl;
-        cout << "8. Wyznacz MST (Prima)" <<endl;
+        cout << "3. Wyznacz MST (Kruskala)" <<endl;
+        cout << "4. Wyznacz MST (Prima)" <<endl;
+        cout << "5. Wyznacz Najkrotsze drogi w grafie (Djikstra)" <<endl;
+        cout << "6. Wyznacz Najkrotsze drogi w grafie (Bellman-Ford)" <<endl;
         cout << "0. Wyjdz" << endl;
     }
 
@@ -22,14 +20,10 @@ public:
         bool app = true;
         int choice;
 
-        int value, vf, vl;
-        cout << endl << "Podaj ilosc wierzcholkow" <<endl;
-        cin >> value;
-        cout << endl << "Podaj wierzcholek poczatkowy" <<endl;
-        cin >> vf;
-        cout << endl << "Podaj wierzcholek koncowy" <<endl;
-        cin >> vl;
-        auto graph = GraphList(value, vf, vl);
+        string file;
+        cout << endl << "Podaj sciezke do pliku" <<endl;
+        cin >> file;
+        auto graph = GraphList::graphListloadFromFile(file);
 
         while(app){
             printMenu();
@@ -44,7 +38,7 @@ public:
                 case 2: {
                     bool directed;
                     int w1, w2, weight;
-                    cout << "Dodawanie grafu:" <<endl;
+                    cout << "Dodawanie krawedzi:" <<endl;
                     cout << "Podaj pierwszy wierzcholek: " << endl;
                     cin >> w1;
                     cout << "Podaj drugi wierzcholek: " << endl;
@@ -63,29 +57,22 @@ public:
                     break;
                 }
                 case 3: {
-                    string file;
-                    cout << endl << "Podaj sciezke do pliku" <<endl;
-                    cin >> file;
-                    graph = GraphList::graphListloadFromFile(file);
-                    break;
-                }
-                case 4: {
-                    graph.~GraphList();
-                    cout << "Graf usuniety " << endl;
-                    break;
-                }
-                case 5: {
-                    graph.MinimumSpanningTreeKurskal();
+                    graph.MinimumSpanningTreeKruskal();
                     cout<< endl;
                     break;
                 }
-                case 6: {
+                case 4: {
                     graph.MinimumSpanningTreePrim();
                     cout<< endl;
                     break;
                 }
-                case 7: {
+                case 5: {
                     graph.shortestPathDijkstra();
+                    cout<< endl;
+                    break;
+                }
+                case 6: {
+                    graph.shortestPathbellmanFord();
                     cout<< endl;
                     break;
                 }
