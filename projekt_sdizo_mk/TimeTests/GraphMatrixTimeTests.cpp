@@ -15,10 +15,10 @@ public:
 
         vector<GraphMatrix> instances;
 
-        for (int i = 0; i < numInstances; ++i) {
+        for (int i = 0; i < numInstances; i++) {
             GraphMatrix graph(numVertices, 0, 0);
-            for (int u = 0; u < numVertices; ++u) {
-                for (int v = u + 1; v < numVertices; ++v) {
+            for (int u = 0; u < numVertices; u++) {
+                for (int v = u + 1; v < numVertices; v++) {
                     if (dis(gen) <= density) {
                         int weight = rand() % 10 + 1;  // Losowa waga z zakresu 1-10
                         graph.addEdge(u, v, weight, false);  // Dodanie nieskierowanej krawędzi
@@ -45,12 +45,12 @@ public:
         long long int frequency, start, elapsed;
         QueryPerformanceFrequency((LARGE_INTEGER *)&frequency);
         double sum = 0;
-        for (int i = 0; i < instances.size(); ++i) {
+        for (int i = 0; i < instances.size(); i++) {
             if (file.is_open()) {
 //                file << "Graf" << i + 1 << ":\n";
                 // liczenie czasu
                 start = read_QPC();
-                instances[i].getMinimumSpanningTreeKruskal();
+                instances[i].MinimumSpanningTreeKurskal();
                 elapsed = read_QPC() - start;
 
 //                file <<  setprecision(5) << (float)elapsed /frequency << "\n"; //Time [s]

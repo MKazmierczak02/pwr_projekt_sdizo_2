@@ -74,12 +74,12 @@ public:
                     cout << "Graf usuniety " << endl;
                 }
                 case 5: {
-                    graph.getMinimumSpanningTreeKruskal();
+                    graph.MinimumSpanningTreeKurskal();
                     cout<< endl;
                     break;
                 }
                 case 6: {
-                    graph.getMinimumSpanningTreePrim();
+                    graph.MinimumSpanningTreePrim();
                     cout<< endl;
                     break;
                 }

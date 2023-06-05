@@ -50,7 +50,7 @@ public:
 //                file << "Graf" << i + 1 << ":\n";
                 // liczenie czasu
                 start = read_QPC();
-                instances[i].getMinimumSpanningTreeKruskal();
+                instances[i].MinimumSpanningTreeKurskal();
                 elapsed = read_QPC() - start;
 
 //                file <<  setprecision(5) << (float)elapsed /frequency << "\n"; //Time [s]

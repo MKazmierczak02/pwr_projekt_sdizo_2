@@ -2,7 +2,6 @@
 #include <vector>
 #include <fstream>
 #include <queue>
-#import <algorithm>
 using namespace std;
 
 class EdgeList {
@@ -40,7 +39,7 @@ public:
 
     void addEdge(int u, int v, int weight, bool directed) {
         if (u < 0 || u >= num_vertices || v < 0 || v >= num_vertices) {
-            cout << "Nieprawidlowy index wierzcholka" << std::endl;
+            cout << "Nieprawidlowy index wierzcholka" << endl;
             return;
         }
 
@@ -64,13 +63,13 @@ public:
 
     void displayList() {
         for (int i = 0; i < num_vertices; i++) {
-            std::cout << "Wierzcholek " << i << ": ";
+            cout << "Wierzcholek " << i << ": ";
             ListEl* current = adj_list[i];
             while (current != nullptr) {
-                std::cout << "(" << current->v << ", " << current->weight << ") ";
+                cout << "(" << current->v << ", " << current->weight << ") ";
                 current = current->next;
             }
-            std::cout << std::endl;
+            cout << endl;
         }
     }
 
@@ -83,10 +82,7 @@ public:
         return group[vertex];
     }
 
-    void getMinimumSpanningTreeKruskal() {
-        // Nowy graf dla MST
-        GraphList mst(num_vertices, 0, 0);
-
+    void MinimumSpanningTreeKruskal() {
         // Wektor wszystkich krawędzi w grafie
         vector<EdgeList> edges;
 
@@ -121,32 +117,29 @@ public:
             int group_u = findSet(group, u);
             int group_v = findSet(group, v);
 
-            // Jeśli dodanie krawędzi nie tworzy cyklu, dodaj ją do MST
+            // Jeśli nie wystąpi cykl, dodawanie do MST
             if (group_u != group_v) {
                 cout << "(" <<v <<","<<u<<")  "<<edge.weight<<endl;
                 sum += edge.weight;
-                // Połącz zbiory wierzchołków źródłowego i docelowego
+                // Łączenie zbiorów
                 group[group_u] = group_v;
             }
         }
         cout<<"MST = "<<sum << endl;
     }
 
-    void getMinimumSpanningTreePrim() {
-        // Nowy graf dla MST
-        GraphList mst(num_vertices, 0, 0);
-
+    void MinimumSpanningTreePrim() {
         // Wierzcholek od ktorego zaczynamy
         int startVertex = 0;
 
         vector<int> key(num_vertices, INF); // Tablica kluczy (wagi)
         vector<int> group(num_vertices, -1); // Tablica grup w MST
-        vector<bool> inMST(num_vertices, false); // Tablica oznaczająca, czy wierzchołek należy już do MST
+        vector<bool> inMST(num_vertices, false); // Tablica wierzcholkow nalezacych MST
 
         // Ustawienie klucza startowego na 0
         key[startVertex] = 0;
 
-        // Kolejka priorytetowa posortowana wg key
+        // Kolejka priorytetowa posortowana wg wag
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
         pq.push(make_pair(0, startVertex));
 
@@ -173,7 +166,7 @@ public:
         }
         int sum = 0;
         // Dodawanie krawędzi do MST w oparciu o tablicę grup
-        for (int v = 0; v < num_vertices; ++v) {
+        for (int v = 0; v < num_vertices; v++) {
             if (group[v] != -1) {
                 cout << "(" <<v <<","<<group[v]<<")  "<<key[v]<<endl;
                 sum += key[v];
@@ -228,7 +221,7 @@ public:
         cout << "End  Dist Path"<< endl;
 
         // Wyświetlenie długości drogi i sekwencji wierzchołków dla każdego wierzchołka
-        for (int v = 0; v < num_vertices; ++v) {
+        for (int v = 0; v < num_vertices; v++) {
             if (v != startVertex) {
                 cout << v << "  |  ";
                 cout << distance[v] << "  |  ";
@@ -239,13 +232,84 @@ public:
                     path.push_back(currentVertex);
                     currentVertex = parent[currentVertex];
                 }
-
-                for (int i = path.size() - 1; i >= 0; --i) {
+                // Wyswietlanie drogi od tylu
+                for (int i = path.size() - 1; i >= 0; i--) {
                     cout << path[i];
                     if (i != 0)
                         cout << " ";
                 }
                 cout << endl;
+            }
+        }
+    }
+
+    void shortestPathbellmanFord() {
+        int startVertex = this->vf;
+
+        vector<int> distance(num_vertices, INF); // Tablica odległości
+        distance[startVertex] = 0;
+        vector<int> parent(num_vertices, -1); // Tablica poprzednikow w najkrótszej ścieżce
+
+        // Relaksacja krawędzi |V|
+        for (int i = 0; i < num_vertices - 1; i++) {
+            // Iteracja po wszystkich krawędziach
+            for (int u = 0; u < num_vertices; u++) {
+                ListEl* current = adj_list[u];
+                while (current != nullptr) {
+                    int v = current->v;
+                    int weight = current->weight;
+
+                    // Relaksacja krawędzi
+                    if (distance[u] != INF && distance[u] + weight < distance[v]) {
+                        distance[v] = distance[u] + weight;
+                        parent[v] = u;
+                    }
+                    current = current->next;
+                }
+            }
+        }
+
+        // Sprawdzenie czy występują ujemne cykle
+        for (int u = 0; u < num_vertices; u++) {
+            ListEl* current = adj_list[u];
+            while (current != nullptr) {
+                int v = current->v;
+                int weight = current->weight;
+
+                // Sprawdzenie ujemnego cyklu
+                if (distance[u] != INF && distance[u] + weight < distance[v]) {
+                    cout << "Graf zawiera ujemny cykl." << endl;
+                    return;
+                }
+                current = current->next;
+            }
+        }
+
+        // Wyświetlenie wyników
+        cout << "Start = " << startVertex<< endl;
+        cout << "End  Dist Path"<< endl;
+
+        for (int v = 0; v < num_vertices; v++) {
+            if (v!=startVertex){
+                cout << v << "  |  ";
+                if (distance[v] == INF) {
+                    cout << "Brak ścieżki." << endl;
+                } else {
+                    cout << distance[v] << "  | ";
+                    vector<int> path;
+                    int currentVertex = v;
+                    while (currentVertex != -1) {
+                        path.push_back(currentVertex);
+                        currentVertex = parent[currentVertex];
+                    }
+                    // Wyswietlanie drogi od tylu
+                    for (int i = path.size() - 1; i >= 0; i--) {
+                        cout << path[i];
+                        if (i != 0)
+                            cout << " ";
+                    }
+                    cout << endl;
+                }
             }
         }
     }

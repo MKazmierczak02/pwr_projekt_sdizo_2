@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <queue>
 #include <fstream>
+#include <stack>
 
 using namespace std;
 class Edge {
@@ -72,11 +73,11 @@ public:
 
     // Wyświetl macierz wag
     void displayMatrix() {
-        for (int i = 0; i < num_vertices; ++i) {cout << setw(5) << i;}
+        for (int i = 0; i < num_vertices; i++) {cout << setw(5) << i;}
         cout << endl;
-        for (int i = 0; i < num_vertices; ++i) {
+        for (int i = 0; i < num_vertices; i++) {
             cout << i << " ";
-            for (int j = 0; j < num_vertices; ++j) {
+            for (int j = 0; j < num_vertices; j++) {
                 if (adjacencyMatrix[i][j] == INF)
                     cout << setw(5) << "INF";
                 else
@@ -99,13 +100,13 @@ public:
         return group[v];
     }
 
-    void getMinimumSpanningTreeKruskal() {
+    void MinimumSpanningTreeKurskal() {
         // Wektor wszystkich krawędzi w grafie
         vector<Edge> edges;
 
         // Tworzenie listy krawędzi na podstawie macierzy sąsiedztwa
-        for (int i = 0; i < num_vertices; ++i) {
-            for (int j = i + 1; j < num_vertices; ++j) {
+        for (int i = 0; i < num_vertices; i++) {
+            for (int j = i + 1; j < num_vertices; j++) {
                 int weight = this->getWeight(i, j);
                 if (weight != INF) {
                     edges.push_back(Edge(i, j, weight));
@@ -122,7 +123,7 @@ public:
 //        vector<int> rank(num_vertices, 0);
 
         // Inicjalizacja wektora grup
-        for (int i = 0; i < num_vertices; ++i) {
+        for (int i = 0; i < num_vertices; i++) {
             group[i] = i;
         }
         int sum = 0;
@@ -135,28 +136,29 @@ public:
             int group_u = findSet(group, u);
             int group_v = findSet(group, v);
 
+            // Jeśli nie wystąpi cykl, dodawanie do MST
             if (group_u != group_v) {
                 cout << "(" <<v <<","<<u<<")  "<<edge.weight<<endl;
                 sum += edge.weight;
+                // Łączenie zbiorów
                 group[group_u] = group_v;
             }
         }
         cout<<"MST = "<<sum << endl;
     }
 
-    void getMinimumSpanningTreePrim() {
-
+    void MinimumSpanningTreePrim() {
         // Wierzcholek od ktorego zaczynamy
         int startVertex = 0;
 
         vector<int> key(num_vertices, INF); // Tablica kluczy (wagi)
         vector<int> group(num_vertices, -1); // Tablica grup w MST
-        vector<bool> inMST(num_vertices, false); // Tablica oznaczająca, czy wierzchołek należy już do MST
+        vector<bool> inMST(num_vertices, false); // Tablica wierzcholkow nalezacych MST
 
         // Ustawienie klucza startowego na 0
         key[startVertex] = 0;
 
-        // Kolejka priorytetowa posortowana wg key
+        // Kolejka priorytetowa posortowana wg wag
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
         pq.push(make_pair(0, startVertex));
 
@@ -167,7 +169,7 @@ public:
             inMST[u] = true;
 
             // Przeszukiwanie sąsiadujących wierzchołków
-            for (int v = 0; v < num_vertices; ++v) {
+            for (int v = 0; v < num_vertices; v++) {
                 int weight = this->getWeight(u, v);
 
                 if (weight != INF && !inMST[v] && weight < key[v]) {
@@ -179,7 +181,7 @@ public:
         }
         int sum = 0;
         // Dodawanie krawędzi do MST w oparciu o tablicę grup
-        for (int v = 0; v < num_vertices; ++v) {
+        for (int v = 0; v < num_vertices; v++) {
             if (group[v] != -1) {
                 cout << "(" <<v <<","<<group[v]<<")  "<<key[v]<<endl;
                 sum += key[v];
@@ -202,7 +204,7 @@ public:
             int minVertex = -1;
 
             // Znalezienie wierzchołka o najmniejszej odległości
-            for (int v = 0; v < num_vertices; ++v) {
+            for (int v = 0; v < num_vertices; v++) {
                 if (!visited[v] && distance[v] < minDistance) {
                     minDistance = distance[v];
                     minVertex = v;
@@ -215,7 +217,7 @@ public:
             visited[minVertex] = true;
 
             // Aktualizacja odległości do sąsiadujących wierzchołków
-            for (int v = 0; v < num_vertices; ++v) {
+            for (int v = 0; v < num_vertices; v++) {
                 int weight = this->getWeight(minVertex, v);
                 if (weight != INF && distance[minVertex] + weight < distance[v]) {
                     distance[v] = distance[minVertex] + weight;
@@ -228,7 +230,7 @@ public:
         cout << "End  Dist Path"<< endl;
 
         // Wyświetlenie długości drogi i sekwencji wierzchołków dla każdego wierzchołka
-        for (int v = 0; v < num_vertices; ++v) {
+        for (int v = 0; v < num_vertices; v++) {
             if (v != startVertex) {
                 cout << v << "  |  ";
                 cout << distance[v] << "  |  ";
@@ -246,6 +248,71 @@ public:
                         cout << " ";
                 }
                 cout << endl;
+            }
+        }
+    }
+
+    void shortestPathBellmanFord() {
+        int startVertex = this->vf;
+
+        vector<int> distance(num_vertices, INF); // Tablica odległości
+        distance[startVertex] = 0;
+        vector<int> parent(num_vertices, -1); // Tablica poprzednikow w najkrótszej ścieżce
+
+        // Relaksacja krawędzi |V|
+        for (int i = 0; i < num_vertices ; i++) {
+            for (int u = 0; u < num_vertices; u++) {
+                for (int v = 0; v < num_vertices; v++) {
+                    int weight = getWeight(u, v);
+                    // Relaksacja krawędzi
+                    if (distance[u] != INF && distance[u] + weight < distance[v]) {
+                        distance[v] = distance[u] + weight;
+                        parent[v] = u;
+                    }
+                }
+            }
+        }
+
+
+        // Sprawdzenie czy występują ujemne cykle
+        for (int u = 0; u < num_vertices; u++) {
+            for (int v = 0; v < num_vertices; v++) {
+                int weight = getWeight(u, v);
+
+                // Sprawdzenie ujemnego cyklu
+                if (distance[u] != INF && distance[u] + weight < distance[v]) {
+                    cout << "Graf zawiera ujemny cykl." << endl;
+                    return;
+                }
+            }
+        }
+
+        // Wyświetlenie wyników
+        cout << "Start = " << startVertex<< endl;
+        cout << "End  Dist Path"<< endl;
+
+        for (int v = 0; v < num_vertices; v++) {
+            if (v != startVertex) {
+                cout << v << "  |  ";
+                if (distance[v] == INF) {
+                    cout << "Brak drogi." << endl;
+                } else {
+                    cout << distance[v] << "  | ";
+
+                    vector<int> path;
+                    int currentVertex = v;
+                    while (currentVertex != -1) {
+                        path.push_back(currentVertex);
+                        currentVertex = parent[currentVertex];
+                    }
+                    // Wyswietlanie drogi od tylu
+                    for (int i = path.size() - 1; i >= 0; i--) {
+                        cout << path[i];
+                        if (i != 0)
+                            cout << " ";
+                    }
+                    cout << endl;
+                }
             }
         }
     }

@@ -8,17 +8,25 @@ using namespace std;
 //{
 //    auto graph = GraphMatrix::graphMatrixloadFromFile("./graf.txt");
 //    graph.displayMatrix();
-//    graph.getMinimumSpanningTreeKruskal();
+//    graph.MinimumSpanningTreeKurskal();
 //    cout << "\n\n";
-//    graph.getMinimumSpanningTreePrim();
+//    graph.MinimumSpanningTreePrim();
 //    cout << "\n\n";
 //    EXPECT_EQ(0, 0);
 //}
 
-TEST(GraphMatrix, GraphMatrix_ND_Test)
+TEST(GraphMatrix, GraphMatrix_Dijkstra_Test)
 {
     auto graph = GraphMatrix::graphMatrixloadFromFile("./graf3.txt");
     cout << "\n\n";
     graph.shortestPathDijkstra();
+    EXPECT_EQ(0, 0);
+}
+
+TEST(GraphMatrix, GraphMatrix_BellmanFord_Test)
+{
+    auto graph = GraphMatrix::graphMatrixloadFromFile("./graf3.txt");
+    cout << "\n\n";
+    graph.shortestPathBellmanFord();
     EXPECT_EQ(0, 0);
 }
