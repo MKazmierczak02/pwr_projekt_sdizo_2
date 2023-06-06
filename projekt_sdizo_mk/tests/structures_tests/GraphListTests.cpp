@@ -13,7 +13,7 @@ TEST(GraphList, GraphList_Kruskal_TEST)
 
 TEST(GraphList, GraphList_Prim_TEST)
 {
-    GraphList graph = GraphList::graphListloadFromFile("./graf.txt");
+    GraphList graph = GraphList::graphListloadFromFile("./mst_2.txt");
     graph.displayList();
     graph.MinimumSpanningTreePrim();
     cout << "\n\n";
@@ -23,7 +23,7 @@ TEST(GraphList, GraphList_Prim_TEST)
 
 TEST(GraphList, GraphList_Dijkstra_TEST)
 {
-    GraphList graph = GraphList::graphListloadFromFile("./graf3.txt");
+    GraphList graph = GraphList::graphListloadFromFile("./path_1.txt");
     graph.shortestPathDijkstra();
     cout << "\n\n";
     EXPECT_EQ(0, 0);
@@ -31,7 +31,7 @@ TEST(GraphList, GraphList_Dijkstra_TEST)
 
 TEST(GraphList, GraphList_BellmanFord_TEST)
 {
-    GraphList graph = GraphList::graphListloadFromFile("./graf3.txt");
+    GraphList graph = GraphList::graphListloadFromFile("./path_1.txt");
     graph.shortestPathbellmanFord();
     cout << "\n\n";
     EXPECT_EQ(0, 0);

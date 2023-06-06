@@ -293,7 +293,7 @@ public:
             if (v!=startVertex){
                 cout << v << "  |  ";
                 if (distance[v] == INF) {
-                    cout << "Brak ścieżki." << endl;
+                    cout << "Brak drogi." << endl;
                 } else {
                     cout << distance[v] << "  | ";
                     vector<int> path;

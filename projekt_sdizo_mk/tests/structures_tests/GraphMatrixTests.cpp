@@ -17,7 +17,7 @@ TEST(GraphMatrix, GraphMatrix_Kruskal_Test)
 
 TEST(GraphMatrix, GraphMatrix_Prim_Test)
 {
-    auto graph = GraphMatrix::graphMatrixloadFromFile("./graf.txt");
+    auto graph = GraphMatrix::graphMatrixloadFromFile("./path_1.txt");
     graph.displayMatrix();
     graph.MinimumSpanningTreePrim();
     cout << "\n\n";
