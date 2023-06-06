@@ -20,11 +20,12 @@ public:
         bool app = true;
         int choice;
 
+        vector<int> loaded_graph;
+
         string file;
         cout << endl << "Podaj sciezke do pliku" <<endl;
         cin >> file;
-        auto graph = GraphList::graphListloadFromFile(file);
-
+        auto graph = GraphList::graphListloadFromFile(file, false);
         while(app){
             printMenu();
             cin >> choice;
@@ -57,22 +58,26 @@ public:
                     break;
                 }
                 case 3: {
-                    graph.MinimumSpanningTreeKruskal();
+                    auto graphForAlgorithm = GraphList::graphListloadFromFile(file, false);
+                    graphForAlgorithm.MinimumSpanningTreeKruskal();
                     cout<< endl;
                     break;
                 }
                 case 4: {
-                    graph.MinimumSpanningTreePrim();
+                    auto graphForAlgorithm = GraphList::graphListloadFromFile(file, false);
+                    graphForAlgorithm.MinimumSpanningTreePrim();
                     cout<< endl;
                     break;
                 }
                 case 5: {
-                    graph.shortestPathDijkstra();
+                    auto graphForAlgorithm = GraphList::graphListloadFromFile(file, true);
+                    graphForAlgorithm.shortestPathDijkstra();
                     cout<< endl;
                     break;
                 }
                 case 6: {
-                    graph.shortestPathbellmanFord();
+                    auto graphForAlgorithm = GraphList::graphListloadFromFile(file, true);
+                    graphForAlgorithm.shortestPathbellmanFord();
                     cout<< endl;
                     break;
                 }

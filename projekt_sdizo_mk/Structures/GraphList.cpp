@@ -314,21 +314,17 @@ public:
         }
     }
 
-    static GraphList  graphListloadFromFile(const string& fileName) {
+    static GraphList  graphListloadFromFile(const string& fileName, bool directed) {
         fstream file(fileName);
         int edges, vertices, u, v, weight, vf, vl;
         if(file.is_open())
             fstream file(fileName);
         if(file.is_open())
         {
-            bool directed = true;
             file >> edges;
             file >> vertices;
             file >> vf;
             file >> vl;
-            if (vf == 0 && vl == 0){
-                directed = false;
-            }
             GraphList graph = GraphList(vertices, vf, vl);
             if(file.fail())
                 cout << "File error - READ SIZE" << endl;

@@ -23,7 +23,7 @@ public:
         string file;
         cout << endl << "Podaj sciezke do pliku" <<endl;
         cin >> file;
-        auto graph = GraphMatrix::graphMatrixloadFromFile(file);
+        auto graph = GraphMatrix::graphMatrixloadFromFile(file, false);
 
         while(app){
             printMenu();
@@ -57,22 +57,26 @@ public:
                     break;
                 }
                 case 3: {
-                    graph.MinimumSpanningTreeKurskal();
+                    auto graphForAlgorithm = GraphMatrix::graphMatrixloadFromFile(file, false);
+                    graphForAlgorithm.MinimumSpanningTreeKurskal();
                     cout<< endl;
                     break;
                 }
                 case 4: {
-                    graph.MinimumSpanningTreePrim();
+                    auto graphForAlgorithm = GraphMatrix::graphMatrixloadFromFile(file, false);
+                    graphForAlgorithm.MinimumSpanningTreePrim();
                     cout<< endl;
                     break;
                 }
                 case 5: {
-                    graph.shortestPathDijkstra();
+                    auto graphForAlgorithm = GraphMatrix::graphMatrixloadFromFile(file, true);
+                    graphForAlgorithm.shortestPathDijkstra();
                     cout<< endl;
                     break;
                 }
                 case 6: {
-                    graph.shortestPathBellmanFord();
+                    auto graphForAlgorithm = GraphMatrix::graphMatrixloadFromFile(file, true);
+                    graphForAlgorithm.shortestPathBellmanFord();
                     cout<< endl;
                     break;
                 }

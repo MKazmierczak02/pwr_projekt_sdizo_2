@@ -314,19 +314,15 @@ public:
         }
     }
 
-    static GraphMatrix graphMatrixloadFromFile(const string& fileName) {
+    static GraphMatrix graphMatrixloadFromFile(const string& fileName, bool directed) {
         fstream file(fileName);
         int edges, vertices, u, v, weight, vf, vl;
         if(file.is_open())
         {
-            bool directed = true;
             file >> edges;
             file >> vertices;
             file >> vf;
             file >> vl;
-            if (vf == 0 && vl == 0){
-                directed = false;
-            }
             GraphMatrix graph = GraphMatrix(vertices, vf, vl);
             if(file.fail())
                 cout << "File error - READ  num_vertices" << endl;
