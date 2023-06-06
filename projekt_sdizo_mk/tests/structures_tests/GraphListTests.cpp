@@ -5,7 +5,7 @@ using namespace std;
 
 TEST(GraphList, GraphList_Kruskal_TEST)
 {
-    GraphList graph = GraphList::graphListloadFromFile("./graf.txt");
+    GraphList graph = GraphList::graphListloadFromFile("./mst_1.txt");
     graph.displayList();
     graph.MinimumSpanningTreeKruskal();
     EXPECT_EQ(0, 0);

@@ -320,8 +320,8 @@ public:
         if(file.is_open())
         {
             bool directed = true;
-            file >> vertices;
             file >> edges;
+            file >> vertices;
             file >> vf;
             file >> vl;
             if (vf == 0 && vl == 0){

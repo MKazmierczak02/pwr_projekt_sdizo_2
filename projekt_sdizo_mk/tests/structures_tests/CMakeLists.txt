@@ -13,3 +13,9 @@ file(COPY testfiles/graf2.txt
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY testfiles/graf3.txt
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY testfiles/mst_1.txt
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY testfiles/mst_2.txt
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY testfiles/path_1.txt
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
