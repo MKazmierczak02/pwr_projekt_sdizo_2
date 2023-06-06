@@ -179,6 +179,7 @@ public:
                 }
             }
         }
+
         int sum = 0;
         // Dodawanie krawędzi do MST w oparciu o tablicę grup
         for (int v = 0; v < num_vertices; v++) {
