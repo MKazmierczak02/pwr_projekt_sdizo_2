@@ -5,7 +5,6 @@
 #include <iomanip>
 #include <queue>
 #include <fstream>
-#include <stack>
 
 using namespace std;
 class Edge {
