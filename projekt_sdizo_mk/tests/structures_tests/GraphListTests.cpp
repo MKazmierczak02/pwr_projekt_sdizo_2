@@ -8,10 +8,6 @@ TEST(GraphList, GraphList_Kruskal_TEST)
     GraphList graph = GraphList::graphListloadFromFile("./graf.txt");
     graph.displayList();
     graph.MinimumSpanningTreeKruskal();
-    cout << "\n\n";
-    graph.MinimumSpanningTreePrim();
-    cout << "\n\n";
-
     EXPECT_EQ(0, 0);
 }
 
@@ -19,8 +15,6 @@ TEST(GraphList, GraphList_Prim_TEST)
 {
     GraphList graph = GraphList::graphListloadFromFile("./graf.txt");
     graph.displayList();
-    graph.MinimumSpanningTreePrim();
-    cout << "\n\n";
     graph.MinimumSpanningTreePrim();
     cout << "\n\n";
 
