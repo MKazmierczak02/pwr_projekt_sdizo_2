@@ -40,7 +40,7 @@ public:
     }
 
     static void testTimeForIstances(vector<GraphMatrix>& instances, int n, int dens) {
-        string fileName = "graph_matrix_mst_test.txt";
+        string fileName = "graph_matrix_dijkstra_test.txt";
         ofstream file(fileName, ofstream::app);
         long long int frequency, start, elapsed;
         QueryPerformanceFrequency((LARGE_INTEGER *)&frequency);
@@ -50,7 +50,7 @@ public:
 //                file << "Graf" << i + 1 << ":\n";
                 // liczenie czasu
                 start = read_QPC();
-                instances[i].MinimumSpanningTreeKurskal();
+                instances[i].shortestPathBellmanFord();
                 elapsed = read_QPC() - start;
 
 //                file <<  setprecision(5) << (float)elapsed /frequency << "\n"; //Time [s]
@@ -75,7 +75,7 @@ int main() {
             GraphGenerator::testTimeForIstances(instances, vertices, i);
             i++;
         }
-        string fileName = "graph_matrix_mst_test.txt";
+        string fileName = "graph_matrix_dijkstra_test.txt";
         ofstream file(fileName, ofstream::app);
         file << "\n";
     }

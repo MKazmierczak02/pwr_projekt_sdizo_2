@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <vector>
 #include <random>
 #include <windows.h>
@@ -40,7 +41,7 @@ public:
     }
 
     static void testTimeForIstances(vector<GraphList>& instances, int n, int dens) {
-        string fileName = "graph_list_mst_test.txt";
+        string fileName = "graph_list_dijkstra_test.txt";
         ofstream file(fileName, ofstream::app);
         long long int frequency, start, elapsed;
         QueryPerformanceFrequency((LARGE_INTEGER *)&frequency);
@@ -50,7 +51,7 @@ public:
 //                file << "Graf" << i + 1 << ":\n";
                 // liczenie czasu
                 start = read_QPC();
-                instances[i].MinimumSpanningTreeKurskal();
+                instances[i].shortestPathbellmanFord();
                 elapsed = read_QPC() - start;
 
 //                file <<  setprecision(5) << (float)elapsed /frequency << "\n"; //Time [s]
@@ -66,7 +67,7 @@ public:
 
 int main() {
     int numInstances = 100;
-    vector<int> numVertices = {10,50, 100, 250, 500}; // rozmiary listy do przetestowania
+    vector<int> numVertices = {10, 50, 100, 250, 500}; // rozmiary listy do przetestowania
     vector<double> density = {0.25, 0.5, 0.75, 0.99};
     for(int vertices : numVertices){
         int i=0;
@@ -75,7 +76,7 @@ int main() {
             GraphGenerator::testTimeForIstances(instances, vertices, i);
             i++;
         }
-        string fileName = "graph_list_mst_test.txt";
+        string fileName = "graph_list_dijkstra_test.txt";
         ofstream file(fileName, ofstream::app);
         file << "\n";
     }
