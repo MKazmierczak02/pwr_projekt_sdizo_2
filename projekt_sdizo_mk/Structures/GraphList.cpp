@@ -208,6 +208,10 @@ public:
             while (current != nullptr) {
                 int v = current->v;
                 int weight = current->weight;
+                if(weight<0){
+                    cout <<endl<< "ERROR: Graf posiada krawedzie ujemnej wagi" << endl;
+                    return;
+                }
                 if (weight != INF && distance[minVertex] + weight < distance[v]) {
                     distance[v] = distance[minVertex] + weight;
                     parent[v] = minVertex;

@@ -38,8 +38,8 @@ public:
 
     // Dodaj krawędź o określonej wadze między wierzchołkami u i v
     void addEdge(int u, int v, int weight, bool directed) {
-        if (u>num_vertices || v>=num_vertices || weight < 0){
-            cout << "index out of bounds" << endl;
+        if (u < 0 || u >= num_vertices || v < 0 || v >= num_vertices){
+            cout << "Nieprawidlowy index wierzcholka" << endl;
             return;
         }
         // zaleznie czy graf jest skierowany
@@ -195,7 +195,7 @@ public:
         vector<int> parent(num_vertices, -1);     // Tablica poprzednikow w najkrótszej ścieżce
         vector<bool> visited(num_vertices, false); // Tablica odwiedzonych wierzchołków
 
-        int startVertex = this-> vf;
+        int startVertex = this->vf;
         // Odległość od wierzchołka początkowego do samego siebie wynosi 0
         distance[startVertex] = 0;
 
@@ -219,7 +219,11 @@ public:
             // Aktualizacja odległości do sąsiadujących wierzchołków
             for (int v = 0; v < num_vertices; v++) {
                 int weight = this->getWeight(minVertex, v);
-                if (weight != INF && distance[minVertex] + weight < distance[v]) {
+                if (weight < 0) {
+                    cout << endl << "ERROR: Graf posiada krawędzie ujemnej wagi" << endl;
+                    return;
+                }
+                if (weight != INF && !visited[v] && distance[minVertex] + weight < distance[v]) {
                     distance[v] = distance[minVertex] + weight;
                     parent[v] = minVertex;
                 }
