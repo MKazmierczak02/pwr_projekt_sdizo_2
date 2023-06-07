@@ -4,7 +4,7 @@ project(projekt_sdizo_mk)
 set(CMAKE_CXX_STANDARD 17)
 
 enable_testing()
-#set(CMAKE_EXE_LINKER_FLAGS "-static") # WON'T WORK ON MACOS
+set(CMAKE_EXE_LINKER_FLAGS "-static") # WON'T WORK ON MACOS
 set(SOURCE_FILES main.cpp)
 add_executable(projekt_sdizo_2 ${SOURCE_FILES})
 
